@@ -27,6 +27,11 @@ class ScreenCapturer:
         raw = np.array(self.sct.grab(monitor))
         return cv2.cvtColor(raw, cv2.COLOR_BGRA2BGR)
 
+    def grab_full_screen(self) -> np.ndarray:
+        monitor = self.sct.monitors[self.monitor_index]
+        raw = np.array(self.sct.grab(monitor))
+        return cv2.cvtColor(raw, cv2.COLOR_BGRA2BGR)
+
     @staticmethod
     def draw_text_overlay(
         frame: np.ndarray,

@@ -1,19 +1,20 @@
-# Poker Vision Bot (Calibration-First)
+# Poker Vision Bot (Auto-Detection)
 
 A Python poker assistant that:
 
-1. Lets you calibrate unknown poker UI regions interactively.
-2. Captures calibrated screen regions quickly using `mss`.
-3. Parses cards with OpenCV template matching + OCR for numeric fields.
-4. Estimates win probability with Monte Carlo simulation.
-5. Recommends **Fold / Call / Raise** in console and overlay.
+1. Automatically finds the poker table layout on-screen (no manual calibration).
+2. Uses OCR to locate your username (`pcooney`) and action buttons (`Fold`, `Call/Check`, `Raise/Bet`).
+3. Captures inferred regions with `mss`.
+4. Parses cards via OpenCV template matching and reads pot/call amounts via OCR.
+5. Estimates win probability with Monte Carlo simulation.
+6. Recommends **Fold / Call / Raise** in console and overlay.
 
 ## Architecture
 
 - `ScreenCapturer`: Screen grabbing and text overlay.
-- `VisionParser`: Template matching + OCR parsing.
+- `VisionParser`: OCR + template matching + automatic layout inference.
 - `GameEngine`: Equity and action logic.
-- `BotController`: Calibration and main loop orchestration.
+- `BotController`: Main loop orchestration.
 
 ## Install
 
@@ -52,27 +53,17 @@ Create template folders:
 
 Crop these from your poker client for best match quality.
 
-## First Run (Calibration Mode)
+## Run
 
 ```bash
 python main.py
 ```
 
-If `config/calibration.json` doesn't exist, calibration starts automatically.
-
-You'll select these regions (drag ROI boxes):
-
-- Player cards
-- Community cards
-- Pot size
-- Fold button
-- Call button
-- Raise button
-
-The calibration file is saved and reused.
+No calibration step is required. The bot continuously auto-detects the table each loop using OCR anchors.
 
 ## Notes
 
-- Parsing quality depends on ROI quality and template quality.
-- If template parsing misses cards, lower or tune `template_match_threshold` in `VisionParser`.
+- Auto-detection is heuristic; it works best when button labels are visible and your username is displayed as `pcooney`.
+- OCR quality depends on text size/contrast; macOS Screen Recording permission is required.
+- If card parsing misses cards, tune `template_match_threshold` in `VisionParser`.
 - `GameEngine` uses `treys` when available; otherwise a fallback hand-strength proxy is used.

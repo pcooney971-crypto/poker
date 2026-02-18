@@ -1,4 +1,4 @@
-"""Calibration-first poker vision bot package."""
+"""Auto-detection poker vision bot package."""
 
 from .bot_controller import BotController
 

@@ -86,5 +86,5 @@ First launch tips:
   2) Add card templates to:
      - $REPO_DIR/templates/ranks
      - $REPO_DIR/templates/suits
-  3) On first run, calibration UI will ask you to select regions.
+  3) Bot auto-detects table/buttons each run (no manual calibration).
 MSG
