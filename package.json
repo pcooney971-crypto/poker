@@ -1,0 +1,38 @@
+{
+  "name": "polymarket-hft-arbitrage-bot",
+  "version": "1.0.0",
+  "description": "High-frequency weather arbitrage bot for Polymarket CLOB on Polygon",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "ts-node src/main.ts",
+    "watch": "tsc -w",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "ethers": "^6.13.4",
+    "ws": "^8.18.0",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0",
+    "p-retry": "^6.2.1",
+    "decimal.js": "^10.4.3",
+    "node-cron": "^3.0.3",
+    "@clob/sdk": "npm:@polymarket/clob-client@^2.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@types/ws": "^8.5.13",
+    "typescript": "^5.7.3",
+    "ts-node": "^10.9.2",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "eslint": "^9.18.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
