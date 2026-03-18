@@ -5,11 +5,17 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
+    "prestart": "npm run build",
     "start": "node dist/main.js",
     "dev": "ts-node src/main.ts",
     "watch": "tsc -w",
     "lint": "eslint src/**/*.ts",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "preflight": "ts-node scripts/preflight.ts",
+    "find-market": "ts-node scripts/fetch-market.ts",
+    "derive-keys": "ts-node scripts/derive-apikeys.ts",
+    "setup": "bash scripts/setup-server.sh",
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "ethers": "^6.13.4",

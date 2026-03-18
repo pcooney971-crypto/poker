@@ -1,0 +1,69 @@
+# /etc/systemd/system/polymarket-bot.service
+# ============================================================
+# Copy to /etc/systemd/system/ then:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now polymarket-bot
+#
+# View logs:
+#   journalctl -u polymarket-bot -f
+#   journalctl -u polymarket-bot --since "1 hour ago"
+# ============================================================
+
+[Unit]
+Description=Polymarket HFT Weather Arbitrage Bot
+Documentation=file:///opt/polymarket-bot/README.md
+After=network-online.target
+Wants=network-online.target
+
+# Restart if the network drops and comes back
+After=network.target
+
+[Service]
+Type=simple
+User=polybot
+Group=polybot
+WorkingDirectory=/opt/polymarket-bot
+
+# Load all env vars from .env (secrets stay off the command line)
+EnvironmentFile=/opt/polymarket-bot/.env
+
+# Main process
+ExecStart=/usr/bin/node /opt/polymarket-bot/dist/main.js
+
+# Restart policy:
+# - always restart unless the process exits with code 3
+#   (code 3 = intentional shutdown, set by the bot on clean exit)
+Restart=always
+RestartSec=10
+RestartPreventExitStatus=3
+StartLimitIntervalSec=120
+StartLimitBurst=6
+
+# Logging — pipe stdout/stderr to journald
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=polymarket-bot
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+# Timing
+TimeoutStartSec=90
+TimeoutStopSec=30
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+# Allow writes only to log dirs
+ReadWritePaths=/opt/polymarket-bot/logs /var/log/polymarket-bot
+
+# Kill entire process group on stop
+KillMode=mixed
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target
